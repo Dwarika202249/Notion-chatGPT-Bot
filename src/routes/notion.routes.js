@@ -3,7 +3,7 @@ import {
   getPages,
   createPage,
   updatePage,
-  deletePage
+  deletePage,
 } from '../controllers/notion.controller.js';
 
 const router = express.Router();

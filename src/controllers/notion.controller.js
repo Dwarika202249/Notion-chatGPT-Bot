@@ -22,10 +22,12 @@ export const getPages = async (req, res) => {
 
 export const createPage = async (req, res) => {
   try {
-    const { name, status, priority, notes } = req.body;
+    const { name, status, priority, description } = req.body;
 
     const payload = {
-      parent: { database_id: process.env.NOTION_DATABASE_ID },
+      parent: {
+        database_id: process.env.NOTION_DATABASE_ID
+      },
       properties: {
         Name: {
           title: [
@@ -37,10 +39,14 @@ export const createPage = async (req, res) => {
           ]
         },
         Status: {
-          select: { name: status }
+          status: {
+            name: status
+          }
         },
         Priority: {
-          select: { name: priority }
+          select: {
+            name: priority
+          }
         },
         Description: {
           rich_text: [
@@ -55,7 +61,7 @@ export const createPage = async (req, res) => {
     };
 
     const response = await notion.post('/pages', payload);
-
+    console.log("Available Properties:", Object.keys(response.data.properties));
     return success(res, response.data, 'Page created in Notion successfully');
   } catch (err) {
     return error(res, err, 'Failed to create page in Notion');
